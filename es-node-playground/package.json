@@ -1,0 +1,19 @@
+{
+  "name": "es-node-playground",
+  "version": "1.0.0",
+  "description": "Just a place to play around with the es-node-client",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dave Harris",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "2.972.0",
+    "@d2l/event-scheduler-client-node": "^2.0.1",
+    "@d2l/node-lambda-errors": "^1.0.11",
+    "lambda-envelope": "^2.0.5",
+    "promise-retry": "^2.0.1"
+  }
+}
