@@ -3,91 +3,93 @@ import 'package:audioplayers/audioplayers.dart';
 
 void main() => runApp(XylophoneApp());
 
+class XylophoneKeyWidget extends StatelessWidget {
+  const XylophoneKeyWidget({
+    Key? key,
+    required this.color,
+    required this.note,
+  }) : super(key: key);
+
+  final Color color;
+  final int note;
+
+  void playSound() {
+    final player = AudioPlayer();
+    player.play(AssetSource('note$note.wav'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.all(0),
+        backgroundColor: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.zero,
+          ),
+        ),
+      ),
+      child: Container(),
+      onPressed: playSound,
+    );
+  }
+}
+
 class XylophoneApp extends StatelessWidget {
+  void playSound(int note) {
+    final player = AudioPlayer();
+    player.play(AssetSource('note$note.wav'));
+  }
+
+  Expanded buildKey({required Color color, required int note}) {
+    return Expanded(
+      child: XylophoneKeyWidget(
+        color: color,
+        note: note,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.black,
         body: SafeArea(
-          child: Column(children: [
-            TextButton(
-              child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              buildKey(
                 color: Colors.red,
-                height: 50.0,
-                width: 100.0,
+                note: 1,
               ),
-              onPressed: () {
-                final player = AudioPlayer();
-                player.play(AssetSource('note1.wav'));
-              },
-            ),
-            TextButton(
-              child: Container(
+              buildKey(
                 color: Colors.orange,
-                height: 50.0,
-                width: 100.0,
+                note: 2,
               ),
-              onPressed: () {
-                final player = AudioPlayer();
-                player.play(AssetSource('note2.wav'));
-              },
-            ),
-            TextButton(
-              child: Container(
+              buildKey(
                 color: Colors.yellow,
-                height: 50.0,
-                width: 100.0,
+                note: 3,
               ),
-              onPressed: () {
-                final player = AudioPlayer();
-                player.play(AssetSource('note3.wav'));
-              },
-            ),
-            TextButton(
-              child: Container(
+              buildKey(
                 color: Colors.green,
-                height: 50.0,
-                width: 100.0,
+                note: 4,
               ),
-              onPressed: () {
-                final player = AudioPlayer();
-                player.play(AssetSource('note4.wav'));
-              },
-            ),
-            TextButton(
-              child: Container(
+              buildKey(
                 color: Colors.teal,
-                height: 50.0,
-                width: 100.0,
+                note: 5,
               ),
-              onPressed: () {
-                final player = AudioPlayer();
-                player.play(AssetSource('note5.wav'));
-              },
-            ),
-            TextButton(
-              child: Container(
+              buildKey(
                 color: Colors.blue,
-                height: 50.0,
-                width: 100.0,
+                note: 6,
               ),
-              onPressed: () {
-                final player = AudioPlayer();
-                player.play(AssetSource('note6.wav'));
-              },
-            ),
-            TextButton(
-              child: Container(
+              buildKey(
                 color: Colors.purple,
-                height: 50.0,
-                width: 100.0,
+                note: 7,
               ),
-              onPressed: () {
-                final player = AudioPlayer();
-                player.play(AssetSource('note7.wav'));
-              },
-            ),
-          ]),
+            ],
+          ),
         ),
       ),
     );
