@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import '../services/location.dart';
+import '../services/networking.dart';
+import 'location_screen.dart';
 
-const kAppId = 'b6907d289e10d714a6e88b30761fae22';
+const kAppId = '9b0d55343fcd764d48461f9d91302edd';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -10,34 +11,34 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  void getLocation() async {
+  late double latitude;
+  late double longitude;
+
+  void getLocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    print('Latitude: ${location.latitude}, Longitude: ${location.longitude}');
+
+    NetworkHelper network = NetworkHelper(
+      'http://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&APPID=$kAppId',
+    );
+
+    dynamic weatherData = await network.getData();
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen();
+    }));
   }
 
-  void getData() async {
-    final double lat = 37.78;
-    final double lon = -122.41;
-    final Uri uri = Uri.parse(
-        'https://samples.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${kAppId}');
-    http.Response response = await http.get(uri);
-    if (response.statusCode == 200) {
-      print(response.body);
-    } else {
-      print(response.statusCode);
-    }
-  }
+  void getData() async {}
 
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getLocationData();
   }
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return Scaffold();
   }
 }
