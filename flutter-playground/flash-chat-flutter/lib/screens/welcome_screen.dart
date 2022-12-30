@@ -9,7 +9,41 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+  late Animation animation;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      duration: Duration(seconds: 1),
+      vsync: this,
+    );
+    animation = CurvedAnimation(
+      parent: animationController,
+      curve: Curves.decelerate,
+    );
+    animationController.forward();
+    animation.addStatusListener((status) {
+      if (animation.isCompleted) {
+        animationController.reverse(from: 1.0);
+      } else if (animation.isDismissed) {
+        animationController.forward();
+      }
+    });
+    animationController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: 60.0,
+                    height: animation.value * 50.0,
                   ),
                 ),
                 Text(
