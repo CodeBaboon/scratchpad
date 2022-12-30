@@ -18,21 +18,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void initState() {
     super.initState();
     animationController = AnimationController(
-      duration: Duration(seconds: 1),
+      duration: Duration(seconds: 3),
       vsync: this,
     );
-    animation = CurvedAnimation(
-      parent: animationController,
-      curve: Curves.decelerate,
-    );
+
+    animation = ColorTween(
+      begin: Colors.red,
+      end: Colors.blue,
+    ).animate(animationController);
+
     animationController.forward();
-    animation.addStatusListener((status) {
-      if (animation.isCompleted) {
-        animationController.reverse(from: 1.0);
-      } else if (animation.isDismissed) {
-        animationController.forward();
-      }
-    });
+
     animationController.addListener(() {
       setState(() {});
     });
@@ -47,7 +43,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: animation.value,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -60,7 +56,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: animation.value * 50.0,
+                    height: 60.0,
                   ),
                 ),
                 Text(
